@@ -402,7 +402,7 @@ function gerarPDF() {
     image: { type: "jpeg", quality: 0.98 },
     html2canvas: { scale: 2, useCORS: true },
     jsPDF: { unit: "cm", format: "a4", orientation: "portrait" },
-    pagebreak: { mode: "css" },
+    pagebreak: { mode: "css", avoid: [".cv-item", "header"] },
   };
 
   const btn = document.querySelector(".btn-print");
@@ -413,8 +413,22 @@ function gerarPDF() {
   html2pdf()
     .from(preview)
     .set(opt)
-    .save()
-    .then(() => {
+    .output("bloburl")
+    .then(function (pdfUrl) {
+      const newWindow = window.open(pdfUrl, "_blank");
+      if (newWindow) {
+        newWindow.document.write(
+          "<html><head><title>Visualização do PDF</title></head><body>" +
+            '<iframe width="100%" height="100%" src="' +
+            pdfUrl +
+            '"></iframe>' +
+            "</body></html>"
+        );
+      } else {
+        alert(
+          "Seu navegador bloqueou a abertura da janela de visualização. Por favor, permita pop-ups para este site."
+        );
+      }
       btn.innerHTML = originalText;
       btn.disabled = false;
     });
@@ -432,20 +446,16 @@ function gerarHtmlPreview() {
     cnh: getFormValue("input-cnh"),
   };
 
-  // --- INÍCIO DA MODIFICAÇÃO --- //
   let contactContainerStyle = "";
   let contactLinkStyle = "";
 
-  // Ajustado para aplicar em AMBOS os templates com cabeçalho/sidebar colorido.
   if (
     activeTemplate === "template-moderno" ||
     activeTemplate === "template-executivo"
   ) {
     contactContainerStyle = `style="color: var(--cor-texto-contraste);"`;
-    // Estilo para remover fundo e adicionar sublinhado, herdando a cor do pai.
     contactLinkStyle = `style="color: inherit; background-color: transparent; text-decoration: underline;"`;
   }
-  // --- FIM DA MODIFICAÇÃO --- //
 
   const nomeHtml = `<h1 style="font-size: ${getFormValue(
     "input-nome-tamanho"
@@ -692,7 +702,7 @@ function carregarDadosIniciaisExemplo() {
         },
       ],
     },
-    fotoUrl: "perfil.png",
+    fotoUrl: "Perfil.png",
     secoesVisiveis: initialSectionVisibility,
   };
   localStorage.setItem("cvBuilderData", JSON.stringify(dadosIniciais));

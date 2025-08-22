@@ -622,22 +622,128 @@ body {
     size: A4;
   }
 
+  /* Adiciona margem no topo de cada nova página */
+  .cv-secao {
+    margin-top: 1.5cm;
+  }
+
   /* --- CONTROLE INTELIGENTE DE QUEBRA DE PÁGINA --- */
+
+  /* Evita que o cabeçalho seja a última coisa em uma página. */
+  header {
+    page-break-after: avoid;
+  }
+
+  /* Evita quebras de página antes de uma seção, a menos que seja necessário. */
+  .cv-secao {
+    page-break-before: auto;
+  }
+
+  /* Evita que um título de seção fique sozinho no final da página. */
   h2,
   .cv-secao h2 {
     page-break-after: avoid;
   }
+
+  /* Tenta manter um bloco de conteúdo (experiência, formação) na mesma página. */
   .cv-item,
-  .cv-secao,
   .skills-container {
     page-break-inside: avoid;
   }
+
+  /* Previne que links sejam quebrados ao meio. */
   a {
     page-break-inside: avoid;
   }
+
+  /* Evita linhas "órfãs" e "viúvas" em parágrafos e listas. */
   p,
   ul {
     orphans: 3;
     widows: 3;
+  }
+}
+/* Media Queries for Responsiveness */
+@media (max-width: 1024px) {
+  body {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .editor-coluna,
+  .preview-coluna {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    border-right: none;
+    border-bottom: 2px solid #d1d5db;
+  }
+  .preview-coluna {
+    background: #e2e8f0;
+  }
+  #cv-preview {
+    box-shadow: none;
+    width: 100%;
+    padding: 1.5cm;
+  }
+  .template-compacto {
+    padding: 1.5cm;
+  }
+  .template-moderno {
+    flex-direction: column;
+  }
+  .template-moderno .cv-sidebar,
+  .template-moderno .cv-main {
+    width: 100%;
+    padding: 1.5cm;
+  }
+  .template-moderno .cv-sidebar {
+    background-color: var(--cor-primaria);
+  }
+  .template-moderno .cv-main {
+    background-color: white;
+  }
+  .template-executivo header {
+    padding: 1.5cm 1.5cm 1cm 1.5cm;
+  }
+  .template-executivo main {
+    padding: 1.5cm;
+  }
+  .template-suico main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5cm;
+  }
+  .template-suico .col-esquerda {
+    border-right: none;
+    border-bottom: 1.5px solid #e2e8f0;
+    padding-right: 0;
+    padding-bottom: 1.5cm;
+  }
+  .template-suico .col-esquerda .cv-secao h2,
+  .template-suico .contato,
+  .template-suico .habilidades-suico-container {
+    text-align: left;
+  }
+}
+
+@media (max-width: 768px) {
+  .editor-coluna {
+    padding: 15px;
+  }
+  .secao-editor {
+    padding: 15px;
+  }
+  .secao-editor h3 {
+    margin: -16px -16px 15px -16px;
+    padding: 12px 15px;
+  }
+  .gerenciamento-botoes {
+    grid-template-columns: 1fr;
+  }
+  .template-selectors {
+    grid-template-columns: 1fr;
+  }
+  .crop-modal-content {
+    padding: 15px;
   }
 }
