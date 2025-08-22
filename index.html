@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerador de Currículo PRO</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Roboto+Slab:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- COLUNA DO EDITOR -->
+    <div class="editor-coluna">
+      <h2>Gerador de Currículo</h2>
+
+      <div class="secao-editor">
+        <h3><span class="secao-toggle-icon">-</span>🚀 Gerenciamento</h3>
+        <div class="secao-content">
+          <p class="info-gerenciamento">
+            Seu progresso é salvo automaticamente no navegador.
+          </p>
+          <div class="gerenciamento-botoes">
+            <button
+              class="btn btn-importar"
+              onclick="document.getElementById('import-input').click()"
+            >
+              ⬆️ Importar Dados
+            </button>
+            <input
+              type="file"
+              id="import-input"
+              accept=".json"
+              onchange="importarDados(event)"
+              style="display: none"
+            />
+            <button class="btn btn-exportar" onclick="exportarDados()">
+              ⬇️ Exportar Dados
+            </button>
+          </div>
+          <button class="btn btn-limpar" onclick="limparDados()">
+            🗑️ Limpar Tudo e Recomeçar
+          </button>
+        </div>
+      </div>
+
+      <div class="secao-editor">
+        <h3><span class="secao-toggle-icon">-</span>🎨 Design e Layout</h3>
+        <div class="secao-content">
+          <div class="campo-form">
+            <label>Escolha o Modelo</label>
+            <div class="template-selectors">
+              <div
+                class="template-choice active"
+                data-template="template-compacto"
+              >
+                <img
+                  src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE2MCIgdmlld0JveD0iMCAwIDEyMCAxNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxNjAiIGZpbGw9IiNmYWZhZmEiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjI1IiByPSIxMiIgZmlsbD0iI2RlZGVkZSIvPjxyZWN0IHg9IjMwIiB5PSI0MiIgd2lkdGg9IjYwIiBoZWlnaHQ9IjUiIHJ4PSIyIiBmaWxsPSIjYmNiY2JjIi8+PHJlY3QgeD0iMjAiIHk9IjUyIiB3aWR0aD0iODAiIGhlaWdodD0iMyIgcng9IjEuNSIgZmlsbD0iI2M4YzhjOCIvPjxyZWN0IHg9IjEwIiB5PSI2NSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iIzI1NjNlYiIvPjxyZWN0IHg9IjEwIiB5PSI3NSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHJlY3QgeD0iMTAiIHk9Ijg1IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjY2NjIi8+PHJlY3QgeD0iMTAiIHk9Ijk1IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjY2NjIi8+PHJlY3QgeD0iMTAiIHk9IjExMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHJlY3QgeD0iMTAiIHk9IjEyMCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iI2NjYyIvPjwvc3ZnPg=="
+                  alt="Compacto"
+                />
+                <span>Compacto</span>
+              </div>
+              <div class="template-choice" data-template="template-moderno">
+                <img
+                  src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE2MCIgdmlld0JveD0iMCAwIDEyMCAxNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxNjAiIGZpbGw9IiNmYWZhZmEiLz48cmVjdCB3aWR0aD0iNDAiIGhlaWdodD0iMTYwIiBmaWxsPSIjMjU2M2ViIi8+PGNpcmNsZSBjeD0iMjAiIGN5PSIyNSIgcj0iMTIiIGZpbGw9IiNmYWZhZmEiLz48cmVjdCB4PSI1MCIgeT0iMjAiIHdpZHRoPSI2MCIgaGVpZ2h0PSI1IiByeD0iMiIgZmlsbD0iI2JjYmNiYyIvPjxyZWN0IHg9IjUwIiB5PSIzMCIgd2lkdGg9IjUwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiNjOGM4YzgiLz48cmVjdCB4PSI4IiB5PSI2MCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjZmFmYWZhIi8+PHJlY3QgeD0iOCIgeT0iNzAiIHdpZHRoPSIzMiIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iI2RkZCIvPjxyZWN0IHg9IjgiIHk9Ijc1IiB3aWR0aD0iMzIiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9IiNkZGQiLz48cmVjdCB4PSI1MCIgeT0iNTAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0iIzI1NjNlYiIvPjxyZWN0IHg9IjUwIiB5PSI2MCIgd2lkdGg9IjY1IiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjY2MiLz48cmVjdCB4PSI1MCIgeT0iNzUiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0iIzI1NjNlYiIvPjxyZWN0IHg9IjUwIiB5PSI4NSIgd2lkdGg9IjY1IiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjY2MiLz48L3N2Zz4="
+                  alt="Moderno"
+                />
+                <span>Moderno</span>
+              </div>
+              <div class="template-choice" data-template="template-executivo">
+                <img
+                  src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE2MCIgdmlld0JveD0iMCAwIDEyMCAxNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxNjAiIGZpbGw9IiNmYWZhZmEiLz48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjMjU2M2ViIi8+PHJlY3QgeD0iMzAiIHk9IjE1IiB3aWR0aD0iNjAiIGhlaWdodD0iNSIgcng9IjIiIGZpbGw9IiNmYWZhZmEiLz48cmVjdCB4PSIyMCIgeT0iMjUiIHdpZHRoPSI4MCIgaGVpZ2h0PSIzIiByeD0iMS41IiBmaWxsPSIjZGRkIi8+PHJlY3QgeD0iMTAiIHk9IjY1IiB3aWR0aD0iNDAiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiMyNTYzZWIiLz48cmVjdCB4PSIxMCIgeT0iNzUiIHdpZHRoPSIxMDAiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9IiNjYyIvPjxyZWN0IHg9IjEwIiB5PSI4MiIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iI2NjIi8+PHJlY3QgeD0iMTAiIHk9IjEwMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHJlY3QgeD0iMTAiIHk9IjExMCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iI2NjIi8+PC9zdmc+"
+                  alt="Executivo"
+                />
+                <span>Executivo</span>
+              </div>
+              <div class="template-choice" data-template="template-suico">
+                <img
+                  src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE2MCIgdmlld0JveD0iMCAwIDEyMCAxNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxNjAiIGZpbGw9IiNmYWZhZmEiLz48cmVjdCB4PSIxMCIgeT0iMTUiIHdpZHRoPSI4MCIgaGVpZ2h0PSI1IiByeD0iMiIgZmlsbD0iI2JjYmNiYyIvPjxyZWN0IHg9IjEwIiB5PSIyNSIgd2lkdGg9IjYwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiNjOGM4YzgiLz48cmVjdCB4PSIxMCIgeT0iNDUiIHdpZHRoPSIzMCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0iIzIyMjIyMiIvPjxyZWN0IHg9IjUwIiB5PSI0NSIgd2lkdGg9IjYwIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjY2NjIi8+PHJlYWN0IHg9IjUwIiB5PSI1MyIgd2lkdGg9IjYwIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjY2NjIi8+PHJlY3QgeD0iMTAiIHk9Ijg1IiB3aWR0aD0iMzAiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiMyMjIyMjIiLz48cmVjdCB4PSI1MCIgeT0iODUiIHdpZHRoPSI2MCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iI2NjYyIvPjwvc3ZnPg=="
+                  alt="Suíço"
+                />
+                <span>Suíço</span>
+              </div>
+            </div>
+          </div>
+          <div class="campo-form">
+            <label for="input-font">Fonte do Documento</label>
+            <select id="input-font" onchange="updatePreview()">
+              <option value="'Lato', sans-serif">Lato (Padrão)</option>
+              <option value="'Roboto', sans-serif">Roboto</option>
+              <option value="'Merriweather', serif">Merriweather</option>
+            </select>
+          </div>
+          <div class="campo-form campo-cor">
+            <label for="input-cor">Cor de Destaque</label>
+            <div>
+              <input
+                type="color"
+                id="input-cor"
+                value="#2563eb"
+                oninput="updatePreview()"
+              />
+              <span id="cor-swatch"></span>
+            </div>
+          </div>
+          <div class="campo-form">
+            <label for="input-nome-tamanho"
+              >Tamanho do Nome: <span id="nome-tamanho-valor">38pt</span></label
+            >
+            <input
+              type="range"
+              id="input-nome-tamanho"
+              min="20"
+              max="52"
+              value="38"
+              oninput="updatePreview()"
+            />
+          </div>
+          <div class="campo-form">
+            <label for="input-titulo-tamanho"
+              >Tamanho do Título da Seção:
+              <span id="titulo-tamanho-valor">13pt</span></label
+            >
+            <input
+              type="range"
+              id="input-titulo-tamanho"
+              min="10"
+              max="20"
+              value="13"
+              oninput="updatePreview()"
+            />
+          </div>
+          <div class="campo-form">
+            <label for="input-corpo-tamanho"
+              >Tamanho do Texto Principal:
+              <span id="corpo-tamanho-valor">10.5pt</span></label
+            >
+            <input
+              type="range"
+              id="input-corpo-tamanho"
+              min="8"
+              max="14"
+              step="0.5"
+              value="10.5"
+              oninput="updatePreview()"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="secao-editor">
+        <h3><span class="secao-toggle-icon">-</span>📷 Foto</h3>
+        <div class="secao-content">
+          <div class="campo-form">
+            <label for="input-foto-formato">Formato da Foto</label>
+            <select id="input-foto-formato" onchange="updatePreview()">
+              <option value="foto-circulo">Círculo</option>
+              <option value="foto-arredondado">Arredondado</option>
+              <option value="foto-quadrado">Quadrado</option>
+            </select>
+          </div>
+          <div class="campo-form">
+            <label for="input-foto">Upload da Foto</label>
+            <input type="file" id="input-foto" accept="image/*" />
+          </div>
+          <div class="campo-form">
+            <label
+              ><input
+                type="checkbox"
+                id="toggle-foto"
+                checked
+                onchange="updatePreview()"
+              />
+              Mostrar Foto</label
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="secao-editor">
+        <h3><span class="secao-toggle-icon">-</span>Dados Pessoais</h3>
+        <div class="secao-content">
+          <div class="campo-form">
+            <label for="input-nome">Nome Completo</label
+            ><input type="text" id="input-nome" oninput="updatePreview()" />
+          </div>
+          <div class="campo-form">
+            <label for="input-subtitulo">Cargo/Título</label
+            ><input
+              type="text"
+              id="input-subtitulo"
+              oninput="updatePreview()"
+            />
+          </div>
+          <div class="campo-form">
+            <label for="input-email">Email</label
+            ><input type="email" id="input-email" oninput="updatePreview()" />
+          </div>
+          <div class="campo-form">
+            <label for="input-telefone">Telefone</label
+            ><input type="tel" id="input-telefone" oninput="updatePreview()" />
+          </div>
+          <div class="campo-form">
+            <label for="input-linkedin">LinkedIn (URL)</label
+            ><input type="text" id="input-linkedin" oninput="updatePreview()" />
+          </div>
+          <div class="campo-form">
+            <label for="input-github">GitHub (URL)</label
+            ><input type="text" id="input-github" oninput="updatePreview()" />
+          </div>
+          <div class="campo-form">
+            <label for="input-cnh">Carteira de Motorista (CNH)</label
+            ><input
+              type="text"
+              id="input-cnh"
+              placeholder="Ex: Categoria AB"
+              oninput="updatePreview()"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="secao-editor">
+        <h3 class="secao-header-flex">
+          <div><span class="secao-toggle-icon">-</span>Resumo</div>
+          <button
+            class="btn-toggle-vis"
+            title="Mostrar/Ocultar Seção"
+            data-secao="resumo"
+            onclick="toggleSectionVisibility('resumo')"
+          >
+            👁️
+          </button>
+        </h3>
+        <div class="secao-content">
+          <textarea id="input-resumo" oninput="updatePreview()"></textarea>
+        </div>
+      </div>
+      <div class="secao-editor">
+        <h3 class="secao-header-flex">
+          <div>
+            <span class="secao-toggle-icon">-</span>Experiência Profissional
+          </div>
+          <button
+            class="btn-toggle-vis"
+            title="Mostrar/Ocultar Seção"
+            data-secao="experiencias"
+            onclick="toggleSectionVisibility('experiencias')"
+          >
+            👁️
+          </button>
+        </h3>
+        <div class="secao-content">
+          <div id="experiencias-container"></div>
+          <button class="btn" onclick="adicionarExperiencia()">
+            + Adicionar
+          </button>
+        </div>
+      </div>
+      <div class="secao-editor">
+        <h3 class="secao-header-flex">
+          <div><span class="secao-toggle-icon">-</span>Formação Acadêmica</div>
+          <button
+            class="btn-toggle-vis"
+            title="Mostrar/Ocultar Seção"
+            data-secao="formacoes"
+            onclick="toggleSectionVisibility('formacoes')"
+          >
+            👁️
+          </button>
+        </h3>
+        <div class="secao-content">
+          <div id="formacoes-container"></div>
+          <button class="btn" onclick="adicionarFormacao()">+ Adicionar</button>
+        </div>
+      </div>
+      <div class="secao-editor">
+        <h3 class="secao-header-flex">
+          <div>
+            <span class="secao-toggle-icon">-</span>Certificações e Cursos
+          </div>
+          <button
+            class="btn-toggle-vis"
+            title="Mostrar/Ocultar Seção"
+            data-secao="certificacoes"
+            onclick="toggleSectionVisibility('certificacoes')"
+          >
+            👁️
+          </button>
+        </h3>
+        <div class="secao-content">
+          <div id="certificacoes-container"></div>
+          <button class="btn" onclick="adicionarCertificacao()">
+            + Adicionar
+          </button>
+        </div>
+      </div>
+      <div class="secao-editor">
+        <h3 class="secao-header-flex">
+          <div><span class="secao-toggle-icon">-</span>Habilidades</div>
+          <button
+            class="btn-toggle-vis"
+            title="Mostrar/Ocultar Seção"
+            data-secao="habilidades"
+            onclick="toggleSectionVisibility('habilidades')"
+          >
+            👁️
+          </button>
+        </h3>
+        <div class="secao-content">
+          <div id="habilidades-container"></div>
+          <button class="btn" onclick="adicionarHabilidade()">
+            + Adicionar
+          </button>
+        </div>
+      </div>
+      <div class="secao-editor">
+        <h3 class="secao-header-flex">
+          <div><span class="secao-toggle-icon">-</span>Idiomas</div>
+          <button
+            class="btn-toggle-vis"
+            title="Mostrar/Ocultar Seção"
+            data-secao="idiomas"
+            onclick="toggleSectionVisibility('idiomas')"
+          >
+            👁️
+          </button>
+        </h3>
+        <div class="secao-content">
+          <div id="idiomas-container"></div>
+          <button class="btn" onclick="adicionarIdioma()">+ Adicionar</button>
+        </div>
+      </div>
+      <div class="secao-editor">
+        <h3 class="secao-header-flex">
+          <div><span class="secao-toggle-icon">-</span>Projetos</div>
+          <button
+            class="btn-toggle-vis"
+            title="Mostrar/Ocultar Seção"
+            data-secao="projetos"
+            onclick="toggleSectionVisibility('projetos')"
+          >
+            👁️
+          </button>
+        </h3>
+        <div class="secao-content">
+          <div id="projetos-container"></div>
+          <button class="btn" onclick="adicionarProjeto()">+ Adicionar</button>
+        </div>
+      </div>
+
+      <button class="btn-print" onclick="gerarPDF()">🖨️ Salvar PDF</button>
+    </div>
+
+    <!-- COLUNA DO PREVIEW -->
+    <div class="preview-coluna"><div id="cv-preview"></div></div>
+
+    <!-- MODAL DE CORTE DE FOTO -->
+    <div id="crop-modal" class="crop-modal-overlay" style="display: none">
+      <div class="crop-modal-content">
+        <h3>Ajustar Foto</h3>
+        <div class="crop-container">
+          <img id="image-to-crop" src="" alt="Imagem para cortar" />
+        </div>
+        <div class="crop-actions">
+          <button id="cancel-crop-btn" class="btn btn-limpar">Cancelar</button>
+          <button id="confirm-crop-btn" class="btn">Confirmar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+  </body>
+</html>
