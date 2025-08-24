@@ -626,6 +626,31 @@ body {
   .cv-secao {
     margin-top: 1.5cm;
   }
+  /* Remove a margem superior da primeira seção do documento */
+  .cv-secao:first-of-type {
+    margin-top: 0;
+  }
+  /* Garante que o template moderno não tenha o layout quebrado */
+  #cv-preview.template-moderno {
+    display: block;
+    background: none;
+  }
+  #cv-preview.template-moderno .cv-sidebar,
+  #cv-preview.template-moderno .cv-main {
+    width: 100%;
+    padding: 0;
+    margin-top: 0;
+  }
+  #cv-preview.template-moderno .cv-sidebar {
+    background-color: var(--cor-primaria);
+    padding: 1cm 2cm;
+  }
+  #cv-preview.template-moderno .cv-main {
+    padding: 2cm;
+  }
+  #cv-preview.template-moderno .cv-main .cv-secao:first-of-type {
+    margin-top: 0 !important;
+  }
 
   /* --- CONTROLE INTELIGENTE DE QUEBRA DE PÁGINA --- */
 
